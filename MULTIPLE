@@ -1,0 +1,127 @@
+import type { Metadata } from 'next'
+import './globals.css'
+import { ThemeProvider } from '@/components/theme-provider'
+import Link from "next/link" // Added import for Link
+import { Button } from "@/components/ui/button" // Added import for Button
+import { ChevronRight } from 'lucide-react' // Added import for ChevronRight
+import { Users } from 'lucide-react' // Added import for Users
+import { ChevronDown } from 'lucide-react' // Added import for ChevronDown
+
+export const metadata: Metadata = {
+title: 'TrustLoop',
+description: 'Group savings made simple',
+generator: 'v0.dev',
+}
+
+export default function RootLayout({
+children,
+}: {
+children: React.ReactNode
+}) {
+return (
+  <html lang="en" suppressHydrationWarning>
+    <body>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        {children}
+      </ThemeProvider>
+    </body>
+  </html>
+)
+}
+
+"use client"
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Progress } from "@/components/ui/progress"
+import type { InsightsProps } from "./types"
+
+export function Insights({ currency, monthlyProgress, monthLabel, ytd }: InsightsProps) {
+const max = Math.max(...ytd.map(p => p.amount), 1)
+
+return (
+  <Card className="rounded-xl border">
+    <CardHeader className="pb-2">
+      <CardTitle className="text-sm font-semibold">Insights</CardTitle>
+    </CardHeader>
+    <CardContent className="grid gap-4">
+      <div>
+        <div className="mb-1 flex items-center justify-between text-xs">
+          <span>Monthly savings ({monthLabel})</span>
+          <span className="font-medium">{monthlyProgress}%</span>
+        </div>
+        <Progress value={monthlyProgress} className="h-2" />
+      </div>
+
+      <div>
+        <div className="mb-2 text-xs">Year-to-date savings</div>
+        <div className="relative h-24 w-full">
+          <div className="absolute inset-0 flex items-end gap-1.5">
+            {ytd.map((p, idx) => {
+              const h = Math.round((p.amount / max) * 100)
+              return (
+                <div key={idx} className="flex-1">
+                  <div
+                    className="mx-auto w-full rounded-t bg-emerald-500/80 dark:bg-emerald-400"
+                    style={{ height: `${Math.max(6, h)}%` }}
+                    aria-hidden="true"
+                    title={`${p.month}: ${currency} ${p.amount.toLocaleString()}`}
+                  />
+                </div>
+              )
+            })}
+          </div>
+          <div className="absolute inset-x-0 bottom-0 flex justify-between px-1 text-[10px] text-muted-foreground">
+            {ytd.map((p, idx) => (
+              <span key={idx}>{p.month}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+)
+}
+
+// components/dashboard/quick-actions/mock.ts
+export const mockQuickActionsProps = {
+  actions: [
+    { id: "join", label: "Join Group", href: "/groups#join" },
+    { id: "create", label: "Create Group", href: "/groups#create" },
+    { id: "send", label: "Send Payment", href: "#" },
+    { id: "invite", label: "Invite Friends", href: "#" },
+  ],
+}
+
+// components/dashboard/active-groups/active-groups.tsx
+// No changes needed as the import and replacement are already done above
+
+// components/dashboard/bottom-nav/mock.ts
+export const mockBottomNavProps = {
+  active: "home",
+  items: [
+    { id: "home", label: "Home", href: "/" },
+    { id: "groups", label: "Groups", href: "/groups" },
+    { id: "profile", label: "Profile", href: "#" },
+  ],
+}
+
+// components/app-sidebar.tsx
+export function AppSidebar() {
+  return (
+    <div>
+      <a href="/">Dashboard</a>
+      <SidebarMenuButton asChild>
+        <a href="/groups">
+          <Users />
+          <span>Groups</span>
+          <ChevronDown />
+        </a>
+      </SidebarMenuButton>
+      <a href="/groups">My Groups</a>
+      <a href="/groups?tab=discover">Explore</a>
+    </div>
+  )
+}
+
+// components/fab/create-fab.tsx
+// No changes needed as the default href is already set to "/groups#create"

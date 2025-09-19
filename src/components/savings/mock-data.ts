@@ -1,0 +1,171 @@
+import type { SavingsAccount, SavingsType, SavingsTransaction, SavingsPlan, Milestone } from "./types"
+
+export const savingsTypes: SavingsType[] = [
+  {
+    id: "flexible",
+    name: "Flexible Savings",
+    description: "Save and withdraw anytime with competitive interest rates",
+    interestRate: 8.5,
+    minDeposit: 100,
+    withdrawalRules: [
+      "Withdraw anytime without penalties",
+      "Minimum withdrawal: KES 50",
+      "Daily withdrawal limit: KES 100,000",
+    ],
+    features: ["No lock-in period", "Instant withdrawals", "8.5% annual interest", "Mobile banking access"],
+    icon: "wallet",
+    color: "blue",
+  },
+  {
+    id: "fixed",
+    name: "Fixed Deposit",
+    description: "Lock your money for higher returns with guaranteed interest",
+    interestRate: 12.0,
+    minDeposit: 5000,
+    withdrawalRules: [
+      "Early withdrawal penalties apply",
+      "Minimum term: 3 months",
+      "Interest paid monthly or at maturity",
+    ],
+    features: [
+      "Up to 12% annual interest",
+      "Guaranteed returns",
+      "Flexible terms (3-24 months)",
+      "Interest compounding",
+    ],
+    icon: "lock",
+    color: "green",
+  },
+  {
+    id: "goal",
+    name: "Goal-Based Savings",
+    description: "Save towards specific goals with milestone rewards",
+    interestRate: 9.0,
+    minDeposit: 500,
+    withdrawalRules: [
+      "Withdrawals allowed after 30 days",
+      "Goal completion bonus applies",
+      "Partial withdrawals reduce bonus",
+    ],
+    features: ["9% annual interest", "Milestone rewards", "Goal tracking", "Achievement bonuses"],
+    icon: "target",
+    color: "purple",
+  },
+]
+
+export const mockSavingsAccounts: SavingsAccount[] = [
+  {
+    id: "1",
+    name: "Emergency Fund",
+    type: savingsTypes[0],
+    balance: 45000,
+    targetAmount: 100000,
+    targetDate: "2024-12-31",
+    interestRate: 8.5,
+    createdAt: "2024-01-15",
+    isActive: true,
+    autoSaveEnabled: true,
+    autoSaveAmount: 5000,
+    autoSaveFrequency: "monthly",
+    nextAutoSave: "2024-02-15",
+  },
+  {
+    id: "2",
+    name: "Holiday Fund",
+    type: savingsTypes[2],
+    balance: 25000,
+    targetAmount: 80000,
+    targetDate: "2024-07-01",
+    interestRate: 9.0,
+    createdAt: "2024-01-01",
+    isActive: true,
+    autoSaveEnabled: false,
+  },
+]
+
+export const mockTransactions: SavingsTransaction[] = [
+  {
+    id: "1",
+    accountId: "1",
+    type: "deposit",
+    amount: 5000,
+    description: "Auto-save deposit",
+    timestamp: "2024-01-15T10:30:00Z",
+    status: "completed",
+    method: "M-Pesa",
+  },
+  {
+    id: "2",
+    accountId: "1",
+    type: "interest",
+    amount: 320,
+    description: "Monthly interest earned",
+    timestamp: "2024-01-31T23:59:00Z",
+    status: "completed",
+  },
+  {
+    id: "3",
+    accountId: "2",
+    type: "deposit",
+    amount: 10000,
+    description: "Manual deposit",
+    timestamp: "2024-01-10T14:20:00Z",
+    status: "completed",
+    method: "Bank Transfer",
+  },
+]
+
+export const suggestedPlans: SavingsPlan[] = [
+  {
+    id: "1",
+    name: "Conservative Plan",
+    description: "Steady growth with low risk",
+    monthlyAmount: 3000,
+    duration: 24,
+    projectedReturn: 85000,
+    riskLevel: "low",
+    features: ["Guaranteed returns", "Capital protection", "Flexible deposits"],
+  },
+  {
+    id: "2",
+    name: "Balanced Plan",
+    description: "Moderate growth with balanced risk",
+    monthlyAmount: 5000,
+    duration: 18,
+    projectedReturn: 95000,
+    riskLevel: "medium",
+    features: ["Higher returns", "Goal-based rewards", "Milestone bonuses"],
+  },
+  {
+    id: "3",
+    name: "Aggressive Plan",
+    description: "Maximum growth potential",
+    monthlyAmount: 8000,
+    duration: 12,
+    projectedReturn: 105000,
+    riskLevel: "high",
+    features: ["Highest returns", "Investment options", "Premium benefits"],
+  },
+]
+
+export const mockMilestones: Milestone[] = [
+  {
+    id: "1",
+    accountId: "1",
+    title: "First 25%",
+    description: "You've saved 25% of your goal!",
+    targetPercentage: 25,
+    reward: "KES 500 bonus",
+    achieved: true,
+    achievedAt: "2024-01-20",
+  },
+  {
+    id: "2",
+    accountId: "1",
+    title: "Halfway There",
+    description: "You're 50% closer to your goal!",
+    targetPercentage: 50,
+    reward: "KES 1,000 bonus",
+    achieved: false,
+  },
+]
